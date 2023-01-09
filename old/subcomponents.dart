@@ -1,7 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:ical/src/utils.dart';
-
+import 'utils.dart';
 import 'abstract.dart';
 import 'utils.dart' as utils;
 

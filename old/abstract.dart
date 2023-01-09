@@ -1,11 +1,9 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:ical/serializer.dart';
-import 'package:ical/src/utils.dart';
-
-import 'utils.dart' as utils;
-import 'subcomponents.dart';
 import 'package:nanoid/nanoid.dart';
+
+import 'utils.dart';
+import 'subcomponents.dart';
 
 abstract class AbstractSerializer {
   String serialize();
@@ -74,7 +72,7 @@ class IRecurrenceRule {
     out.write('RRULE:FREQ=$frequency');
 
     if (untilDate != null) {
-      out.write(';UNTIL=${utils.formatDateTime(untilDate!)}');
+      out.write(';UNTIL=${formatDateTime(untilDate!)}');
     }
     if (count > 0) {
       out.write(';COUNT=$count');
