@@ -1,7 +1,7 @@
 name: icalendar
-version: 0.2.2
+version: 0.1.0
 description: >-
-  A library to generate/serialize iCalendar files
+  Dart package to serialize/deserialize iCalendar text.
 homepage: https://gitlab.com/powerbuilding/mobile/support-libraries/ical
 environment:
   sdk: ">=2.12.0 <3.0.0"
