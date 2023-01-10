@@ -37,7 +37,7 @@ class CalendarValueList<T extends CalendarValue>
     T Function(String stringElement) toElement,
   ) {
     return CalendarValueList(
-        value.split(RegExp(r'[^\\],')).map(toElement).toList());
+        value.split(RegExp(r'(?<![\\]),')).map(toElement).toList());
   }
 
   T operator [](int index) {

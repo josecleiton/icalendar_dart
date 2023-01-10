@@ -65,7 +65,8 @@ List<CrawledBlock> crawlICalendarLines(List<String> lines) {
 
       // handle quoted values
       if (normalizedLine[nameEndIndex + 1] == "\"") {
-        final valueEndIndex = normalizedLine.indexOf("\"", nameEndIndex + 2);
+        final valueEndIndex =
+            normalizedLine.indexOf(RegExp(r'\"(\;|\:){1}'), nameEndIndex + 2);
         final value = normalizedLine.substring(nameEndIndex + 2, valueEndIndex);
         parameters.add(CrawledParameter(name, value.replaceAll("\"", "")));
         curIndex = valueEndIndex + 1;
