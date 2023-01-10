@@ -5,7 +5,7 @@ import 'calendar_property.dart';
 abstract class CalendarComponent extends Equatable {
   final String componentName;
 
-  CalendarComponent(this.componentName);
+  const CalendarComponent(this.componentName);
 
   List<CalendarProperty> getProperties();
 

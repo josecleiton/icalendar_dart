@@ -6,7 +6,7 @@ abstract class CalendarValue<InnerType> extends Equatable {
   final InnerType value;
   final ValueType type;
 
-  CalendarValue(this.value, this.type);
+  const CalendarValue(this.value, this.type);
 
   void validate() {}
 

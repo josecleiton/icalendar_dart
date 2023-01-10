@@ -5,7 +5,7 @@ class PeriodOfTime extends Equatable {
   final DateTime? end;
   final Duration? duration;
 
-  PeriodOfTime({
+  const PeriodOfTime({
     required this.start,
     this.end,
     this.duration,

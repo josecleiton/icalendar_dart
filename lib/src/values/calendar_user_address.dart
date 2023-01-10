@@ -5,7 +5,8 @@ import '../calendar_value.dart';
 
 /// RFC2445 Section 4.3.3
 class CalendarUserAddressValue extends CalendarValue<String> {
-  CalendarUserAddressValue(String email) : super(email, ValueType.calAddress);
+  const CalendarUserAddressValue(String email)
+      : super(email, ValueType.calAddress);
 
   factory CalendarUserAddressValue.fromCrawledStringValue(String value) =>
       CalendarUserAddressValue(value.substring("MAILTO:".length));

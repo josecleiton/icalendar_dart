@@ -7,7 +7,7 @@ abstract class CalendarParameter<ValueType extends CalendarParameterValue>
   final String parameterName;
   final ValueType value;
 
-  CalendarParameter(this.parameterName, this.value);
+  const CalendarParameter(this.parameterName, this.value);
 
   @override
   String toString() {

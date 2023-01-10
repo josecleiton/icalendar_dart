@@ -2,7 +2,7 @@ import '../calendar_value.dart';
 
 /// RFC2445 Section 4.3.14
 class UTCOffsetValue extends CalendarValue<Duration> {
-  UTCOffsetValue(Duration value) : super(value, ValueType.utcOffset);
+  const UTCOffsetValue(Duration value) : super(value, ValueType.utcOffset);
 
   factory UTCOffsetValue.fromCrawledStringValue(String value) {
     int negativeMultiplier = 1;

@@ -5,7 +5,7 @@ import '../calendar_value.dart';
 
 /// RFC2445 Section 4.3.4
 class DateValue extends CalendarValue<DateTime> {
-  DateValue(DateTime value) : super(value, ValueType.date);
+  const DateValue(DateTime value) : super(value, ValueType.date);
 
   factory DateValue.fromCrawledStringValue(String value) =>
       DateValue(DateFormat("yMMdd").parse(value.toUpperCase()));

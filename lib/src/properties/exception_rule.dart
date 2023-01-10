@@ -42,7 +42,7 @@ class ExceptionRuleProperty extends CalendarProperty<RecurrenceRuleValue> {
           ),
         );
 
-  ExceptionRuleProperty.fromValue(RecurrenceRuleValue value)
+  const ExceptionRuleProperty.fromValue(RecurrenceRuleValue value)
       : super("EXRULE", value);
 
   factory ExceptionRuleProperty.fromCrawledProperty(CrawledProperty property) {

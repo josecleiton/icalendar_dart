@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:equatable/equatable.dart';
 
 import 'calendar_component.dart';

@@ -4,7 +4,7 @@ import 'calendar_value.dart';
 /// separated by Semicolons (;)
 abstract class CalendarMultiPartStructuredValue<InnerValue>
     extends CalendarValue<InnerValue> {
-  CalendarMultiPartStructuredValue(
+  const CalendarMultiPartStructuredValue(
     InnerValue value,
     ValueType type,
   ) : super(value, type);
@@ -23,7 +23,7 @@ abstract class CalendarStructuredValuePart<InnerType>
     extends CalendarValue<InnerType> {
   final String partName;
 
-  CalendarStructuredValuePart(
+  const CalendarStructuredValuePart(
     this.partName,
     InnerType value,
     ValueType type,

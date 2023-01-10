@@ -9,7 +9,7 @@ class DurationValue extends CalendarValue<Duration> {
   /// Ex: `Duration(days: 8, hours: 7, minutes: 2) == "P1W"`
   final bool inWeeks;
 
-  DurationValue(
+  const DurationValue(
     Duration value, {
     this.inWeeks = false,
   }) : super(value, ValueType.duration);

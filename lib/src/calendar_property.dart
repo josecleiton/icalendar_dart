@@ -9,7 +9,7 @@ abstract class CalendarProperty<ValueType extends CalendarValue>
   final String propertyName;
   final ValueType value;
 
-  CalendarProperty(this.propertyName, this.value);
+  const CalendarProperty(this.propertyName, this.value);
 
   List<CalendarParameter<CalendarParameterValue>> getParameters();
 

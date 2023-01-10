@@ -8,7 +8,7 @@ import '../parameters/value_data_type.dart';
 
 /// RFC2445 Section 4.3.1
 class BinaryValue extends CalendarValue<Uint8List> {
-  BinaryValue(Uint8List value) : super(value, ValueType.binary);
+  const BinaryValue(Uint8List value) : super(value, ValueType.binary);
 
   factory BinaryValue.fromCrawledStringValue(String value) =>
       BinaryValue(base64Decode(value));

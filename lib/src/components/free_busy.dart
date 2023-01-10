@@ -30,7 +30,7 @@ class FreeBusyComponent extends CalendarComponent {
   final List<FreeBusyTimeProperty>? freeBusyTimes;
   final List<RequestStatusProperty>? requestStatuses;
 
-  FreeBusyComponent({
+  const FreeBusyComponent({
     this.contact,
     this.dateTimeStart,
     this.dateTimeEnd,
@@ -107,6 +107,7 @@ class FreeBusyComponent extends CalendarComponent {
           freeBusyTimes.add(FreeBusyTimeProperty.fromCrawledProperty(e));
           break;
         default:
+          // ignore: avoid_print
           print("Unknown property encountered in FreeBusyComponent: ${e.name}");
       }
     }

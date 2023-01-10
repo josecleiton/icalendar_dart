@@ -3,7 +3,7 @@ import '../calendar_value.dart';
 
 /// RFC2445 Section 4.3.2
 class BooleanValue extends CalendarValue<bool> {
-  BooleanValue(bool value) : super(value, ValueType.boolean);
+  const BooleanValue(bool value) : super(value, ValueType.boolean);
 
   factory BooleanValue.fromCrawledStringValue(String value) =>
       BooleanValue(value.toUpperCase() == "TRUE");

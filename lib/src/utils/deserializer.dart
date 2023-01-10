@@ -3,8 +3,8 @@ import '../models/crawled_block.dart';
 import '../models/crawled_property.dart';
 
 List<CrawledBlock> crawlICalendarLines(List<String> lines) {
-  final String lowercaseBlockBeginPrefix = "begin:";
-  final String lowercaseBlockEndPrefix = "end:";
+  const String lowercaseBlockBeginPrefix = "begin:";
+  const String lowercaseBlockEndPrefix = "end:";
 
   int nestedBlockDepth = -1;
   List<CrawledBlock> blocks = [];
@@ -26,16 +26,16 @@ List<CrawledBlock> crawlICalendarLines(List<String> lines) {
         blocks.add(
           CrawledBlock(
             blockName: blockName,
-            properties: [],
-            nestedBlocks: [],
+            properties: const [],
+            nestedBlocks: const [],
           ),
         );
       } else if (nestedBlockDepth > 0) {
         blocks[blocks.length - 1] = blocks.last.addBlockAtDepth(
           CrawledBlock(
             blockName: blockName,
-            properties: [],
-            nestedBlocks: [],
+            properties: const [],
+            nestedBlocks: const [],
           ),
           nestedBlockDepth - 1,
         );

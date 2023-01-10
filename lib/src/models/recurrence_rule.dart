@@ -200,7 +200,7 @@ class RecurrenceByDay extends Equatable {
   final RecurrenceWeekday weekday;
   final int? occurrence;
 
-  RecurrenceByDay(
+  const RecurrenceByDay(
     this.weekday, {
     this.occurrence,
   });

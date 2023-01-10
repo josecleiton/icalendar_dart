@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import "../calendar_component.dart";
 import "../calendar_property.dart";
 import "../calendar_value.dart";
@@ -21,7 +23,7 @@ class TimeZoneComponent extends CalendarComponent {
   final List<StandardTimeZoneComponent>? standardTimeZones;
   final List<DaylightTimeZoneComponent>? daylightTimeZones;
 
-  TimeZoneComponent({
+  const TimeZoneComponent({
     required this.timeZoneIdentifier,
     this.lastModified,
     this.timeZoneUrl,
@@ -121,7 +123,7 @@ abstract class _TimeZoneSubComponent extends CalendarComponent {
   final List<RecurrenceRuleProperty>? recurrenceRules;
   final List<TimeZoneNameProperty>? timeZoneNames;
 
-  _TimeZoneSubComponent(
+  const _TimeZoneSubComponent(
     String componentName, {
     required this.dateTimeStart,
     required this.timeZoneOffsetFrom,
@@ -155,7 +157,7 @@ abstract class _TimeZoneSubComponent extends CalendarComponent {
 }
 
 class StandardTimeZoneComponent extends _TimeZoneSubComponent {
-  StandardTimeZoneComponent({
+  const StandardTimeZoneComponent({
     required DateTimeStartProperty dateTimeStart,
     required TimeZoneOffsetFromProperty timeZoneOffsetFrom,
     required TimeZoneOffsetToProperty timeZoneOffsetTo,
@@ -243,7 +245,7 @@ class StandardTimeZoneComponent extends _TimeZoneSubComponent {
 }
 
 class DaylightTimeZoneComponent extends _TimeZoneSubComponent {
-  DaylightTimeZoneComponent({
+  const DaylightTimeZoneComponent({
     required DateTimeStartProperty dateTimeStart,
     required TimeZoneOffsetFromProperty timeZoneOffsetFrom,
     required TimeZoneOffsetToProperty timeZoneOffsetTo,

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import '../calendar_component.dart';
 import '../calendar_property.dart';
 import '../calendar_value.dart';
@@ -78,7 +80,7 @@ class TodoComponent extends CalendarComponent {
   final List<EmailAlarmComponent>? emailAlarms;
   final List<ProcedureAlarmComponent>? procedureAlarms;
 
-  TodoComponent({
+  const TodoComponent({
     this.classification,
     this.dateTimeCompleted,
     this.dateTimeCreated,

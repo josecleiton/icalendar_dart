@@ -20,7 +20,7 @@ class TimeValue extends CalendarValue<DateTime> {
   /// located inside the current calendar
   final String? timeZoneIdentifier;
 
-  TimeValue(
+  const TimeValue(
     DateTime value, {
     this.fixed = _defaultFixed,
     this.timeZoneIdentifier,

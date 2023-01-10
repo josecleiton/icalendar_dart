@@ -42,7 +42,7 @@ class RecurrenceRuleProperty extends CalendarProperty<RecurrenceRuleValue> {
           ),
         );
 
-  RecurrenceRuleProperty.fromValue(RecurrenceRuleValue value)
+  const RecurrenceRuleProperty.fromValue(RecurrenceRuleValue value)
       : super("RRULE", value);
 
   factory RecurrenceRuleProperty.fromCrawledProperty(CrawledProperty property) {

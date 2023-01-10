@@ -56,7 +56,7 @@ class JournalComponent extends CalendarComponent {
   final List<RecurrenceRuleProperty>? recurrenceRules;
   final List<RequestStatusProperty>? requestStatuses;
 
-  JournalComponent({
+  const JournalComponent({
     this.classification,
     this.dateTimeCreated,
     this.description,
@@ -219,6 +219,7 @@ class JournalComponent extends CalendarComponent {
           recurrenceRules.add(RecurrenceRuleProperty.fromCrawledProperty(e));
           break;
         default:
+          // ignore: avoid_print
           print("Unknown property encountered in JournalComponent: ${e.name}");
       }
     }

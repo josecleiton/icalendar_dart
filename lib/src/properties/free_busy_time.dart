@@ -23,7 +23,7 @@ class FreeBusyTimeProperty extends CalendarProperty<PeriodOfTimeValue> {
           ),
         );
 
-  FreeBusyTimeProperty.fromValue(
+  const FreeBusyTimeProperty.fromValue(
     PeriodOfTimeValue value, {
     this.type,
   }) : super("FREEBUSY", value);

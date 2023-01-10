@@ -5,7 +5,7 @@ import '../calendar_value.dart';
 class TextValue extends CalendarValue<String> {
   final bool escapeCharacters;
 
-  TextValue(
+  const TextValue(
     String value, {
     this.escapeCharacters = true,
   }) : super(value, ValueType.text);

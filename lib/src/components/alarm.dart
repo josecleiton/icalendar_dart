@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import '../calendar_component.dart';
 import '../calendar_property.dart';
 import '../calendar_value.dart';
@@ -21,7 +23,7 @@ class AudioAlarmComponent extends CalendarComponent {
   final UriAttachmentProperty? uriAttachment;
   final BinaryAttachmentProperty? binaryAttachment;
 
-  AudioAlarmComponent({
+  const AudioAlarmComponent({
     this.dateTimeTrigger,
     this.durationTrigger,
     this.duration,
@@ -137,7 +139,7 @@ class DisplayAlarmComponent extends CalendarComponent {
   final DurationProperty? duration;
   final RepeatCountProperty? repeatCount;
 
-  DisplayAlarmComponent({
+  const DisplayAlarmComponent({
     this.dateTimeTrigger,
     this.durationTrigger,
     this.duration,
@@ -229,7 +231,7 @@ class EmailAlarmComponent extends CalendarComponent {
   final List<UriAttachmentProperty>? uriAttachments;
   final List<BinaryAttachmentProperty>? binaryAttachments;
 
-  EmailAlarmComponent({
+  const EmailAlarmComponent({
     this.dateTimeTrigger,
     this.durationTrigger,
     required this.description,
@@ -377,7 +379,7 @@ class ProcedureAlarmComponent extends CalendarComponent {
   final RepeatCountProperty? repeatCount;
   final DescriptionProperty? description;
 
-  ProcedureAlarmComponent({
+  const ProcedureAlarmComponent({
     this.dateTimeTrigger,
     this.durationTrigger,
     this.uriAttachment,

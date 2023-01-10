@@ -228,7 +228,7 @@ class RecurrenceRuleParameterValue extends RecurrenceRuleValue
 }
 
 class _FreqValuePart extends CalendarStructuredValuePart<RecurrenceFrequency> {
-  _FreqValuePart(RecurrenceFrequency value)
+  const _FreqValuePart(RecurrenceFrequency value)
       : super("FREQ", value, ValueType.text);
 
   @override
@@ -238,7 +238,8 @@ class _FreqValuePart extends CalendarStructuredValuePart<RecurrenceFrequency> {
 }
 
 class _UntilValuePart extends CalendarStructuredValuePart<DateTime> {
-  _UntilValuePart(DateTime value) : super("UNTIL", value, ValueType.dateTime);
+  const _UntilValuePart(DateTime value)
+      : super("UNTIL", value, ValueType.dateTime);
 
   @override
   String sanitizeToString() {
@@ -247,15 +248,16 @@ class _UntilValuePart extends CalendarStructuredValuePart<DateTime> {
 }
 
 class _CountValuePart extends CalendarStructuredValuePart<int> {
-  _CountValuePart(int value) : super("COUNT", value, ValueType.integer);
+  const _CountValuePart(int value) : super("COUNT", value, ValueType.integer);
 }
 
 class _IntervalValuePart extends CalendarStructuredValuePart<int> {
-  _IntervalValuePart(int value) : super("INTERVAL", value, ValueType.integer);
+  const _IntervalValuePart(int value)
+      : super("INTERVAL", value, ValueType.integer);
 }
 
 class _BySecondValuePart extends CalendarStructuredValuePart<Set<int>> {
-  _BySecondValuePart(Set<int> value)
+  const _BySecondValuePart(Set<int> value)
       : super("BYSECOND", value, ValueType.integer);
 
   @override
@@ -265,7 +267,7 @@ class _BySecondValuePart extends CalendarStructuredValuePart<Set<int>> {
 }
 
 class _ByMinuteValuePart extends CalendarStructuredValuePart<Set<int>> {
-  _ByMinuteValuePart(Set<int> value)
+  const _ByMinuteValuePart(Set<int> value)
       : super("BYMINUTE", value, ValueType.integer);
 
   @override
@@ -275,7 +277,8 @@ class _ByMinuteValuePart extends CalendarStructuredValuePart<Set<int>> {
 }
 
 class _ByHourValuePart extends CalendarStructuredValuePart<Set<int>> {
-  _ByHourValuePart(Set<int> value) : super("BYHOUR", value, ValueType.integer);
+  const _ByHourValuePart(Set<int> value)
+      : super("BYHOUR", value, ValueType.integer);
 
   @override
   String sanitizeToString() {
@@ -285,7 +288,7 @@ class _ByHourValuePart extends CalendarStructuredValuePart<Set<int>> {
 
 class _ByDayValuePart
     extends CalendarStructuredValuePart<Set<RecurrenceByDay>> {
-  _ByDayValuePart(
+  const _ByDayValuePart(
     Set<RecurrenceByDay> value,
   ) : super("BYDAY", value, ValueType.text);
 
@@ -324,7 +327,7 @@ class _ByDayValuePart
 }
 
 class _ByMonthDayValuePart extends CalendarStructuredValuePart<Set<int>> {
-  _ByMonthDayValuePart(Set<int> value)
+  const _ByMonthDayValuePart(Set<int> value)
       : super("BYMONTHDAY", value, ValueType.integer);
 
   @override
@@ -334,7 +337,7 @@ class _ByMonthDayValuePart extends CalendarStructuredValuePart<Set<int>> {
 }
 
 class _ByYearDayValuePart extends CalendarStructuredValuePart<Set<int>> {
-  _ByYearDayValuePart(Set<int> value)
+  const _ByYearDayValuePart(Set<int> value)
       : super("BYYEARDAY", value, ValueType.integer);
 
   @override
@@ -344,7 +347,7 @@ class _ByYearDayValuePart extends CalendarStructuredValuePart<Set<int>> {
 }
 
 class _ByWeekNoValuePart extends CalendarStructuredValuePart<Set<int>> {
-  _ByWeekNoValuePart(Set<int> value)
+  const _ByWeekNoValuePart(Set<int> value)
       : super("BYWEEKNO", value, ValueType.integer);
 
   @override
@@ -354,7 +357,7 @@ class _ByWeekNoValuePart extends CalendarStructuredValuePart<Set<int>> {
 }
 
 class _ByMonthValuePart extends CalendarStructuredValuePart<Set<int>> {
-  _ByMonthValuePart(Set<int> value)
+  const _ByMonthValuePart(Set<int> value)
       : super("BYMONTH", value, ValueType.integer);
 
   @override
@@ -364,7 +367,7 @@ class _ByMonthValuePart extends CalendarStructuredValuePart<Set<int>> {
 }
 
 class _BySetPosValuePart extends CalendarStructuredValuePart<Set<int>> {
-  _BySetPosValuePart(Set<int> value)
+  const _BySetPosValuePart(Set<int> value)
       : super("BYSETPOS", value, ValueType.integer);
 
   @override
@@ -374,7 +377,7 @@ class _BySetPosValuePart extends CalendarStructuredValuePart<Set<int>> {
 }
 
 class _WkstValuePart extends CalendarStructuredValuePart<RecurrenceWeekday> {
-  _WkstValuePart(RecurrenceWeekday value)
+  const _WkstValuePart(RecurrenceWeekday value)
       : super("WKST", value, ValueType.text);
 
   @override

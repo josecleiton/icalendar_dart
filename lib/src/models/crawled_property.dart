@@ -7,7 +7,7 @@ class CrawledProperty extends Equatable {
   final String value;
   final List<CrawledParameter> parameters;
 
-  CrawledProperty({
+  const CrawledProperty({
     required this.name,
     required this.value,
     required this.parameters,

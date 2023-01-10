@@ -7,7 +7,7 @@ class CrawledBlock extends Equatable {
   final List<CrawledProperty> properties;
   final List<CrawledBlock> nestedBlocks;
 
-  CrawledBlock({
+  const CrawledBlock({
     required this.blockName,
     required this.properties,
     required this.nestedBlocks,
