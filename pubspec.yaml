@@ -3,6 +3,8 @@ version: 0.1.1
 description: >-
   Serializes and Deserializes ICalendar text. Offers 99+% coverage of the ICalendar RFC.
 homepage: https://gitlab.com/powerbuilding/opensource/mobile/support-libraries/icalendar-dart
+repository: https://gitlab.com/powerbuilding/opensource/mobile/support-libraries/icalendar-dart
+issue_tracker: https://gitlab.com/powerbuilding/opensource/mobile/support-libraries/icalendar-dart/-/issues
 environment:
   sdk: ">=2.12.0 <3.0.0"
 funding:
