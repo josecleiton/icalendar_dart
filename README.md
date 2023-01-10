@@ -4,6 +4,8 @@ Serializes and Deserializes ICalendar text. Offers 99+% coverage of the ICalenda
 
 **Note:** Non-standard Parameters/Properties/Components (ie: x-\* named things) and IANA-Token based names do not have first class support at the moment. Feel free to submit an MR or extend one of the abstract classes within your project to support your usecase.
 
+Wrote this in 2 days. Deserialization was rushed but is pretty solid overall.
+
 ICalendar RFC: https://www.ietf.org/rfc/rfc2445.txt
 
 ---
@@ -102,6 +104,11 @@ void main() {
   // END:VCALENDAR
 }
 ```
+
+# TODO
+
+- [ ] Better documentation, maybe a script that reads the RFC2445 comment I left on most objects and grabs the relevant section of the spec.
+- [ ] First-Class support for non-standard parameters/properties/components, and IANA-Token/Name objects
 
 # Known Issues
 
