@@ -1,7 +1,7 @@
 import '../calendar_parameter.dart';
 import '../calendar_parameter_value.dart';
 import '../calendar_property.dart';
-import '../calendar_value.dart';
+import '../models/crawled_property.dart';
 import '../values/integer.dart';
 
 /// RFC2445 Section 4.8.7.4
@@ -10,10 +10,15 @@ class SequenceProperty extends CalendarProperty<IntegerValue> {
       : assert(value >= 0, "value must be positive"),
         super("SEQUENCE", IntegerValue(value));
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  factory SequenceProperty.fromCrawledProperty(CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "SEQUENCE",
+      "Received invalid property: ${property.name}",
+    );
+
+    return SequenceProperty(
+      IntegerValue.fromCrawledStringValue(property.value).value,
+    );
   }
 
   @override

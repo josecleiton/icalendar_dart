@@ -3,6 +3,7 @@ import '../calendar_parameter_value.dart';
 import '../calendar_value.dart';
 import '../models/recurrence_rule.dart';
 import 'date_time.dart';
+import 'integer.dart';
 
 /// RFC2445 Section 4.3.10
 class RecurrenceRuleValue
@@ -16,7 +17,7 @@ class RecurrenceRuleValue
     Set<int>? bySeconds,
     Set<int>? byMinutes,
     Set<int>? byHours,
-    Set<RecurranceByDay>? byDays,
+    Set<RecurrenceByDay>? byDays,
     Set<int>? byMonthDays,
     Set<int>? byYearDays,
     Set<int>? byWeekNumbers,
@@ -41,6 +42,125 @@ class RecurrenceRuleValue
           ),
           ValueType.recur,
         );
+
+  factory RecurrenceRuleValue.fromCrawledStringValue(
+    String value, {
+    String? timeZoneIdentifier,
+  }) {
+    RecurrenceFrequency? frequency;
+    int interval = RecurrenceRule.defaultInterval;
+    RecurrenceWeekday startOfWorkWeek = RecurrenceRule.defaultStartOfWorkWeek;
+    DateTime? until;
+    int? count;
+    Set<int>? bySeconds;
+    Set<int>? byMinutes;
+    Set<int>? byHours;
+    Set<RecurrenceByDay>? byDays;
+    Set<int>? byMonthDays;
+    Set<int>? byYearDays;
+    Set<int>? byWeekNumbers;
+    Set<int>? byMonths;
+    Set<int>? bySetPositions;
+
+    value.split(";").forEach((e) {
+      final name = e.split("=").first;
+      final value = e.split("=").last;
+
+      switch (name.toUpperCase()) {
+        case "FREQ":
+          frequency = RecurrenceFrequency.values.firstWhere(
+            (element) => element.value.toUpperCase() == value.toUpperCase(),
+          );
+          break;
+        case "UNTIL":
+          until = DateTimeValue.fromCrawledStringValue(
+            value,
+            timeZoneIdentifier: timeZoneIdentifier,
+          ).value;
+          break;
+        case "COUNT":
+          count = IntegerValue.fromCrawledStringValue(value).value;
+          break;
+        case "INTERVAL":
+          interval = IntegerValue.fromCrawledStringValue(value).value;
+          break;
+        case "BYSECOND":
+          bySeconds = value
+              .split(",")
+              .map((e) => IntegerValue.fromCrawledStringValue(e).value)
+              .toSet();
+          break;
+        case "BYMINUTE":
+          byMinutes = value
+              .split(",")
+              .map((e) => IntegerValue.fromCrawledStringValue(e).value)
+              .toSet();
+          break;
+        case "BYHOUR":
+          byHours = value
+              .split(",")
+              .map((e) => IntegerValue.fromCrawledStringValue(e).value)
+              .toSet();
+          break;
+        case "BYDAY":
+          byDays = _ByDayValuePart.fromCrawledStringValue(value).value;
+          break;
+        case "BYMONTHDAY":
+          byMonthDays = value
+              .split(",")
+              .map((e) => IntegerValue.fromCrawledStringValue(e).value)
+              .toSet();
+          break;
+        case "BYYEARDAY":
+          byYearDays = value
+              .split(",")
+              .map((e) => IntegerValue.fromCrawledStringValue(e).value)
+              .toSet();
+          break;
+        case "BYWEEKNO":
+          byWeekNumbers = value
+              .split(",")
+              .map((e) => IntegerValue.fromCrawledStringValue(e).value)
+              .toSet();
+          break;
+        case "BYMONTH":
+          byMonths = value
+              .split(",")
+              .map((e) => IntegerValue.fromCrawledStringValue(e).value)
+              .toSet();
+          break;
+        case "BYSETPOS":
+          bySetPositions = value
+              .split(",")
+              .map((e) => IntegerValue.fromCrawledStringValue(e).value)
+              .toSet();
+          break;
+        case "WKST":
+          startOfWorkWeek = RecurrenceWeekday.values.firstWhere(
+              (element) => element.value.toUpperCase() == value.toUpperCase());
+          break;
+      }
+    });
+
+    assert(frequency != null, "Frequency must be provided");
+
+    return RecurrenceRuleValue(
+      frequency: frequency!,
+      interval: interval,
+      startOfWorkWeek: startOfWorkWeek,
+      until: until,
+      count: count,
+      bySeconds: bySeconds,
+      byMinutes: byMinutes,
+      byHours: byHours,
+      byDays: byDays,
+      byMonthDays: byMonthDays,
+      byYearDays: byYearDays,
+      byWeekNumbers: byWeekNumbers,
+      byMonths: byMonths,
+      bySetPositions: bySetPositions,
+    );
+  }
 
   @override
   List<CalendarStructuredValuePart> getValueParts() {
@@ -83,7 +203,7 @@ class RecurrenceRuleParameterValue extends RecurrenceRuleValue
     Set<int>? bySeconds,
     Set<int>? byMinutes,
     Set<int>? byHours,
-    Set<RecurranceByDay>? byDays,
+    Set<RecurrenceByDay>? byDays,
     Set<int>? byMonthDays,
     Set<int>? byYearDays,
     Set<int>? byWeekNumbers,
@@ -164,10 +284,33 @@ class _ByHourValuePart extends CalendarStructuredValuePart<Set<int>> {
 }
 
 class _ByDayValuePart
-    extends CalendarStructuredValuePart<Set<RecurranceByDay>> {
+    extends CalendarStructuredValuePart<Set<RecurrenceByDay>> {
   _ByDayValuePart(
-    Set<RecurranceByDay> value,
+    Set<RecurrenceByDay> value,
   ) : super("BYDAY", value, ValueType.text);
+
+  factory _ByDayValuePart.fromCrawledStringValue(String value) {
+    return _ByDayValuePart(
+      value.split(",").map((e) {
+        final byDayRegexp = RegExp(
+          r'(-{0,1}[0-9]+){0,1}(MO|TU|WE|TH|FR|SA|SU){1}',
+          caseSensitive: false,
+        );
+
+        final rbdMatch = byDayRegexp.firstMatch(e)!;
+
+        return RecurrenceByDay(
+          RecurrenceWeekday.values.firstWhere(
+            (element) =>
+                element.value.toUpperCase() == rbdMatch.group(2)!.toUpperCase(),
+          ),
+          occurrence: rbdMatch.group(1) == null
+              ? null
+              : IntegerValue.fromCrawledStringValue(rbdMatch.group(1)!).value,
+        );
+      }).toSet(),
+    );
+  }
 
   @override
   String sanitizeToString() {

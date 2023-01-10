@@ -10,6 +10,9 @@ import '../parameters/value_data_type.dart';
 class BinaryValue extends CalendarValue<Uint8List> {
   BinaryValue(Uint8List value) : super(value, ValueType.binary);
 
+  factory BinaryValue.fromCrawledStringValue(String value) =>
+      BinaryValue(base64Decode(value));
+
   @override
   String sanitizeToString() {
     return base64Encode(value);

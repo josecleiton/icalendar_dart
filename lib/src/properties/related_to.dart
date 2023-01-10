@@ -1,7 +1,7 @@
 import '../calendar_parameter.dart';
 import '../calendar_parameter_value.dart';
 import '../calendar_property.dart';
-import '../calendar_value.dart';
+import '../models/crawled_property.dart';
 import '../parameters/relationship_type.dart';
 import '../values/text.dart';
 
@@ -14,10 +14,24 @@ class RelatedToProperty extends CalendarProperty<TextValue> {
     this.type,
   }) : super("RELATED-TO", TextValue(uid));
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  factory RelatedToProperty.fromCrawledProperty(CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "RELATED-TO",
+      "Received invalid property: ${property.name}",
+    );
+
+    return RelatedToProperty(
+      TextValue.fromCrawledStringValue(property.value).value,
+      type: property.parameters
+              .where(RelationshipTypeParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(RelationshipTypeParameter.testCrawledParameter)
+              .map((e) => RelationshipTypeParameter.fromCrawledParameter(e))
+              .first
+              .type,
+    );
   }
 
   @override

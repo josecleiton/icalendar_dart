@@ -3,7 +3,7 @@ import 'package:intl/locale.dart';
 import '../calendar_parameter.dart';
 import '../calendar_parameter_value.dart';
 import '../calendar_property.dart';
-import '../calendar_value.dart';
+import '../models/crawled_property.dart';
 import '../parameters/calendar_user_type.dart';
 import '../parameters/common_name.dart';
 import '../parameters/delegatees.dart';
@@ -46,10 +46,115 @@ class AttendeeProperty extends CalendarProperty<CalendarUserAddressValue> {
     this.directoryEntryUri,
   }) : super("ATTENDEE", CalendarUserAddressValue(email));
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  factory AttendeeProperty.fromCrawledProperty(CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "ATTENDEE",
+      "Received invalid property: ${property.name}",
+    );
+
+    return AttendeeProperty(
+      CalendarUserAddressValue.fromCrawledStringValue(property.value).value,
+      locale: property.parameters
+              .where(LanguageParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(LanguageParameter.testCrawledParameter)
+              .map((e) => LanguageParameter.fromCrawledParameter(e))
+              .first
+              .locale,
+      userType: property.parameters
+              .where(CalendarUserTypeParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(CalendarUserTypeParameter.testCrawledParameter)
+              .map((e) => CalendarUserTypeParameter.fromCrawledParameter(e))
+              .first
+              .type,
+      membershipEmails: property.parameters
+              .where(GroupOrListMembershipParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(GroupOrListMembershipParameter.testCrawledParameter)
+              .map(
+                  (e) => GroupOrListMembershipParameter.fromCrawledParameter(e))
+              .first
+              .emails,
+      participationRoleType: property.parameters
+              .where(ParticipationRoleParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(ParticipationRoleParameter.testCrawledParameter)
+              .map((e) => ParticipationRoleParameter.fromCrawledParameter(e))
+              .first
+              .type,
+      participationStatusType: property.parameters
+              .where(ParticipationStatusParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(ParticipationStatusParameter.testCrawledParameter)
+              .map((e) => ParticipationStatusParameter.fromCrawledParameter(e))
+              .first
+              .type,
+      rsvpExpectation: property.parameters
+              .where(RSVPExpectationParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(RSVPExpectationParameter.testCrawledParameter)
+              .map((e) => RSVPExpectationParameter.fromCrawledParameter(e))
+              .first
+              .rsvp,
+      delegateeEmails: property.parameters
+              .where(DelegateesParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(DelegateesParameter.testCrawledParameter)
+              .map((e) => DelegateesParameter.fromCrawledParameter(e))
+              .first
+              .emails,
+      delegatorEmails: property.parameters
+              .where(DelegatorsParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(DelegatorsParameter.testCrawledParameter)
+              .map((e) => DelegatorsParameter.fromCrawledParameter(e))
+              .first
+              .emails,
+      sentByEmail: property.parameters
+              .where(SentByParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(SentByParameter.testCrawledParameter)
+              .map((e) => SentByParameter.fromCrawledParameter(e))
+              .first
+              .email,
+      commonName: property.parameters
+              .where(CommonNameParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(CommonNameParameter.testCrawledParameter)
+              .map((e) => CommonNameParameter.fromCrawledParameter(e))
+              .first
+              .commonName,
+      directoryEntryUri: property.parameters
+              .where(DirectoryEntryParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(DirectoryEntryParameter.testCrawledParameter)
+              .map((e) => DirectoryEntryParameter.fromCrawledParameter(e))
+              .first
+              .uri,
+    );
   }
 
   @override

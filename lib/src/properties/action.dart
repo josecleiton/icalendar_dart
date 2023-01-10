@@ -1,17 +1,23 @@
 import '../calendar_parameter.dart';
 import '../calendar_parameter_value.dart';
 import '../calendar_property.dart';
-import '../calendar_value.dart';
+import '../models/crawled_property.dart';
 import '../values/text.dart';
 
 /// RFC2445 Section 4.8.6.1
 class ActionProperty extends CalendarProperty<TextValue> {
-  ActionProperty(ActionType type) : super("ACTION", TextValue(type.value));
+  final ActionType type;
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  ActionProperty(this.type) : super("ACTION", TextValue(type.value));
+
+  factory ActionProperty.fromCrawledProperty(CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "ACTION",
+      "Received invalid property: ${property.name}",
+    );
+
+    return ActionProperty(ActionType.values.firstWhere(
+        (element) => element.value.toUpperCase() == property.value));
   }
 
   @override

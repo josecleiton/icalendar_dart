@@ -1,7 +1,7 @@
 import '../calendar_parameter.dart';
 import '../calendar_parameter_value.dart';
 import '../calendar_property.dart';
-import '../calendar_value.dart';
+import '../models/crawled_property.dart';
 import '../parameters/free_busy_time_type.dart';
 import '../values/period_of_time.dart';
 
@@ -23,10 +23,29 @@ class FreeBusyTimeProperty extends CalendarProperty<PeriodOfTimeValue> {
           ),
         );
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  FreeBusyTimeProperty.fromValue(
+    PeriodOfTimeValue value, {
+    this.type,
+  }) : super("FREEBUSY", value);
+
+  factory FreeBusyTimeProperty.fromCrawledProperty(CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "FREEBUSY",
+      "Received invalid property: ${property.name}",
+    );
+
+    return FreeBusyTimeProperty.fromValue(
+      PeriodOfTimeValue.fromCrawledStringValue(property.value),
+      type: property.parameters
+              .where(FreeBusyTimeTypeParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(FreeBusyTimeTypeParameter.testCrawledParameter)
+              .map((e) => FreeBusyTimeTypeParameter.fromCrawledParameter(e))
+              .first
+              .type,
+    );
   }
 
   @override

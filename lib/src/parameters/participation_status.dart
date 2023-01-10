@@ -1,11 +1,34 @@
 import '../calendar_parameter.dart';
+import '../models/craweled_parameter.dart';
 import '../values/text.dart';
 
 /// RFC2445 Section 4.2.12
 class ParticipationStatusParameter
     extends CalendarParameter<TextParameterValue> {
-  ParticipationStatusParameter(ParticipationStatusType type)
+  final ParticipationStatusType type;
+
+  ParticipationStatusParameter(this.type)
       : super("PARTSTAT", TextParameterValue(type.value));
+
+  factory ParticipationStatusParameter.fromCrawledParameter(
+      CrawledParameter parameter) {
+    assert(
+      testCrawledParameter(parameter),
+      "Received invalid parameter: ${parameter.name}",
+    );
+    return ParticipationStatusParameter(
+      ParticipationStatusType.values.firstWhere(
+        (element) =>
+            element.value.toUpperCase() ==
+            TextValue.fromCrawledStringValue(parameter.value)
+                .value
+                .toUpperCase(),
+      ),
+    );
+  }
+
+  static bool testCrawledParameter(CrawledParameter parameter) =>
+      parameter.name.toUpperCase() == "PARTSTAT";
 }
 
 enum ParticipationStatusType {

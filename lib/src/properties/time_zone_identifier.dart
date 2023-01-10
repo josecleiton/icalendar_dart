@@ -1,7 +1,7 @@
 import '../calendar_parameter.dart';
 import '../calendar_parameter_value.dart';
 import '../calendar_property.dart';
-import '../calendar_value.dart';
+import '../models/crawled_property.dart';
 import '../values/text.dart';
 
 /// RFC2445 Section 4.8.3.1
@@ -9,10 +9,16 @@ class TimeZoneIdentifierProperty extends CalendarProperty<TextValue> {
   TimeZoneIdentifierProperty(String timeZoneIdentifier)
       : super("TZID", TextValue(timeZoneIdentifier));
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  factory TimeZoneIdentifierProperty.fromCrawledProperty(
+      CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "TZID",
+      "Received invalid property: ${property.name}",
+    );
+
+    return TimeZoneIdentifierProperty(
+      TextValue.fromCrawledStringValue(property.value).value,
+    );
   }
 
   @override

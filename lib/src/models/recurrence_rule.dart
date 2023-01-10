@@ -1,4 +1,6 @@
-class RecurrenceRule {
+import 'package:equatable/equatable.dart';
+
+class RecurrenceRule extends Equatable {
   static const int defaultInterval = 1;
   static const RecurrenceWeekday defaultStartOfWorkWeek =
       RecurrenceWeekday.monday;
@@ -11,7 +13,7 @@ class RecurrenceRule {
   final Set<int>? bySeconds;
   final Set<int>? byMinutes;
   final Set<int>? byHours;
-  final Set<RecurranceByDay>? byDays;
+  final Set<RecurrenceByDay>? byDays;
   final Set<int>? byMonthDays;
   final Set<int>? byYearDays;
   final Set<int>? byWeekNumbers;
@@ -112,6 +114,24 @@ class RecurrenceRule {
         );
 
   bool get isForever => until == null && count == null;
+
+  @override
+  List<Object?> get props => [
+        frequency,
+        interval,
+        startOfWorkWeek,
+        until,
+        count,
+        bySeconds,
+        byMinutes,
+        byHours,
+        byDays,
+        byMonthDays,
+        byYearDays,
+        byWeekNumbers,
+        byMonths,
+        bySetPositions,
+      ];
 }
 
 enum RecurrenceFrequency {
@@ -176,19 +196,15 @@ extension RecurrenceWeekdayStringValue on RecurrenceWeekday {
   }
 }
 
-class RecurranceByDay {
+class RecurrenceByDay extends Equatable {
   final RecurrenceWeekday weekday;
   final int? occurrence;
 
-  RecurranceByDay(this.weekday, this.occurrence);
+  RecurrenceByDay(
+    this.weekday, {
+    this.occurrence,
+  });
 
   @override
-  bool operator ==(Object other) {
-    return other is RecurranceByDay &&
-        weekday == other.weekday &&
-        occurrence == other.occurrence;
-  }
-
-  @override
-  int get hashCode => Object.hash(weekday, occurrence);
+  List<Object?> get props => [weekday, occurrence];
 }

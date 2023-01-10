@@ -2,6 +2,7 @@ import '../calendar_parameter.dart';
 import '../calendar_parameter_value.dart';
 import '../calendar_property.dart';
 import '../calendar_value.dart';
+import '../models/crawled_property.dart';
 import '../parameters/alarm_trigger_relationship.dart';
 import '../parameters/value_data_type.dart';
 import '../values/date_time.dart';
@@ -12,10 +13,16 @@ class DateTimeTriggerProperty extends CalendarProperty<DateTimeValue> {
   DateTimeTriggerProperty(DateTime value)
       : super("TRIGGER", DateTimeValue(value));
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  factory DateTimeTriggerProperty.fromCrawledProperty(
+      CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "TRIGGER",
+      "Received invalid property: ${property.name}",
+    );
+
+    return DateTimeTriggerProperty(
+      DateTimeValue.fromCrawledStringValue(property.value).value,
+    );
   }
 
   @override
@@ -35,10 +42,26 @@ class DurationTriggerProperty extends CalendarProperty<DurationValue> {
     this.relationshipType,
   }) : super("TRIGGER", DurationValue(value));
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  factory DurationTriggerProperty.fromCrawledProperty(
+      CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "TRIGGER",
+      "Received invalid property: ${property.name}",
+    );
+
+    return DurationTriggerProperty(
+      DurationValue.fromCrawledStringValue(property.value).value,
+      relationshipType: property.parameters
+              .where(AlarmTriggerRelationshipParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(AlarmTriggerRelationshipParameter.testCrawledParameter)
+              .map((e) =>
+                  AlarmTriggerRelationshipParameter.fromCrawledParameter(e))
+              .first
+              .type,
+    );
   }
 
   @override

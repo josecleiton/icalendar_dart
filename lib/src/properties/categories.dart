@@ -3,8 +3,8 @@ import 'package:intl/locale.dart';
 import '../calendar_parameter.dart';
 import '../calendar_parameter_value.dart';
 import '../calendar_property.dart';
-import '../calendar_value.dart';
 import '../calendar_value_list.dart';
+import '../models/crawled_property.dart';
 import '../parameters/language.dart';
 import '../values/text.dart';
 
@@ -23,10 +23,30 @@ class CategoriesProperty
           ),
         );
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  factory CategoriesProperty.fromCrawledProperty(CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "CATEGORIES",
+      "Received invalid property: ${property.name}",
+    );
+
+    return CategoriesProperty(
+      CalendarValueList.fromCrawledStringValue(
+              property.value,
+              (stringElement) =>
+                  TextValue.fromCrawledStringValue(stringElement))
+          .values
+          .map((e) => e.value)
+          .toList(),
+      locale: property.parameters
+              .where(LanguageParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(LanguageParameter.testCrawledParameter)
+              .map((e) => LanguageParameter.fromCrawledParameter(e))
+              .first
+              .locale,
+    );
   }
 
   @override

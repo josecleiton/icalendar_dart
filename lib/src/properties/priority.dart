@@ -1,7 +1,7 @@
 import '../calendar_parameter.dart';
 import '../calendar_parameter_value.dart';
 import '../calendar_property.dart';
-import '../calendar_value.dart';
+import '../models/crawled_property.dart';
 import '../values/integer.dart';
 
 /// RFC2445 Section 4.8.1.9
@@ -16,10 +16,15 @@ class PriorityProperty extends CalendarProperty<IntegerValue> {
           IntegerValue(priority),
         );
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  factory PriorityProperty.fromCrawledProperty(CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "PRIORITY",
+      "Received invalid property: ${property.name}",
+    );
+
+    return PriorityProperty(
+      IntegerValue.fromCrawledStringValue(property.value).value,
+    );
   }
 
   @override

@@ -32,9 +32,9 @@ class PeriodOfTimeValue extends CalendarValue<PeriodOfTime> {
   /// Ex: `Duration(days: 8, hours: 7, minutes: 2) == "P1W"`
   final bool durationInWeeks;
 
-  late DateTimeValue _startDateTime;
-  late DateTimeValue? _endDateTime;
-  late DurationValue? _duration;
+  final DateTimeValue _startDateTime;
+  final DateTimeValue? _endDateTime;
+  final DurationValue? _duration;
 
   PeriodOfTimeValue({
     required this.start,
@@ -43,33 +43,64 @@ class PeriodOfTimeValue extends CalendarValue<PeriodOfTime> {
     this.timeZoneIdentifier,
     this.fixed = _defaultFixed,
     this.durationInWeeks = _defaultDurationInWeeks,
-  }) : super(
+  })  : _startDateTime = DateTimeValue(
+          start,
+          fixed: fixed,
+          timeZoneIdentifier: timeZoneIdentifier,
+        ),
+        _duration = duration == null
+            ? null
+            : DurationValue(
+                duration,
+                inWeeks: durationInWeeks,
+              ),
+        _endDateTime = end == null
+            ? null
+            : DateTimeValue(
+                end,
+                fixed: fixed,
+                timeZoneIdentifier: timeZoneIdentifier,
+              ),
+        super(
             PeriodOfTime(
               start: start,
               end: end,
               duration: duration,
             ),
-            ValueType.period) {
-    _startDateTime = DateTimeValue(
-      start,
-      fixed: fixed,
+            ValueType.period);
+
+  factory PeriodOfTimeValue.fromCrawledStringValue(
+    String value, {
+    String? timeZoneIdentifier,
+  }) {
+    final DateTimeValue start = DateTimeValue.fromCrawledStringValue(
+      value.split("/").first,
       timeZoneIdentifier: timeZoneIdentifier,
     );
+    final isDuration = value.split("/").last.toUpperCase().startsWith("P");
 
-    if (duration != null) {
-      _duration = DurationValue(
-        duration!,
-        inWeeks: durationInWeeks,
+    if (isDuration) {
+      final duration = DurationValue.fromCrawledStringValue(
+        value.split("/").last,
       );
-    }
-
-    if (end != null) {
-      _endDateTime = DateTimeValue(
-        end!,
-        fixed: fixed,
+      return PeriodOfTimeValue(
+        start: start.value,
+        duration: duration.value,
+        durationInWeeks: duration.inWeeks,
+        fixed: start.fixed,
         timeZoneIdentifier: timeZoneIdentifier,
       );
     }
+
+    return PeriodOfTimeValue(
+      start: start.value,
+      end: DateTimeValue.fromCrawledStringValue(
+        value.split("/").last,
+        timeZoneIdentifier: timeZoneIdentifier,
+      ).value,
+      fixed: start.fixed,
+      timeZoneIdentifier: timeZoneIdentifier,
+    );
   }
 
   @override

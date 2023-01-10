@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import 'calendar_parameter.dart';
 
-abstract class CalendarValue<InnerType> {
+abstract class CalendarValue<InnerType> extends Equatable {
   final InnerType value;
   final ValueType type;
 
@@ -21,14 +23,11 @@ abstract class CalendarValue<InnerType> {
   }
 
   @override
-  bool operator ==(Object other) {
-    return other is CalendarValue &&
-        type == other.type &&
-        sanitizeToString() == other.sanitizeToString();
-  }
-
-  @override
-  int get hashCode => Object.hash(sanitizeToString(), type);
+  List<Object?> get props => [
+        value,
+        type,
+        getInlineParameters(),
+      ];
 }
 
 enum ValueType {

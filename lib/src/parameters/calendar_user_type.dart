@@ -1,13 +1,36 @@
 import '../calendar_parameter.dart';
+import '../models/craweled_parameter.dart';
 import '../values/text.dart';
 
 /// RFC2445 Section 4.2.3
 class CalendarUserTypeParameter extends CalendarParameter<TextParameterValue> {
-  CalendarUserTypeParameter(CalendarUserType type)
+  final CalendarUserType type;
+
+  CalendarUserTypeParameter(this.type)
       : super(
           "CUTYPE",
           TextParameterValue(type.value),
         );
+
+  factory CalendarUserTypeParameter.fromCrawledParameter(
+      CrawledParameter parameter) {
+    assert(
+      testCrawledParameter(parameter),
+      "Received invalid parameter: ${parameter.name}",
+    );
+    return CalendarUserTypeParameter(
+      CalendarUserType.values.firstWhere(
+        (element) =>
+            element.value.toUpperCase() ==
+            TextValue.fromCrawledStringValue(parameter.value)
+                .value
+                .toUpperCase(),
+      ),
+    );
+  }
+
+  static bool testCrawledParameter(CrawledParameter parameter) =>
+      parameter.name.toUpperCase() == "CUTYPE";
 }
 
 enum CalendarUserType {

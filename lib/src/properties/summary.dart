@@ -3,7 +3,7 @@ import 'package:intl/locale.dart';
 import '../calendar_parameter.dart';
 import '../calendar_parameter_value.dart';
 import '../calendar_property.dart';
-import '../calendar_value.dart';
+import '../models/crawled_property.dart';
 import '../parameters/alternate_text_representation.dart';
 import '../parameters/language.dart';
 import '../values/text.dart';
@@ -19,10 +19,34 @@ class SummaryProperty extends CalendarProperty<TextValue> {
     this.locale,
   }) : super("SUMMARY", TextValue(value));
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  factory SummaryProperty.fromCrawledProperty(CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "SUMMARY",
+      "Received invalid property: ${property.name}",
+    );
+
+    return SummaryProperty(
+      TextValue.fromCrawledStringValue(property.value).value,
+      locale: property.parameters
+              .where(LanguageParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(LanguageParameter.testCrawledParameter)
+              .map((e) => LanguageParameter.fromCrawledParameter(e))
+              .first
+              .locale,
+      alternateTextRepresentation: property.parameters
+              .where(AlternateTextRepresentationParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(AlternateTextRepresentationParameter.testCrawledParameter)
+              .map((e) =>
+                  AlternateTextRepresentationParameter.fromCrawledParameter(e))
+              .first
+              .uri,
+    );
   }
 
   @override

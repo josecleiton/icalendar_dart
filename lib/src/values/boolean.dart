@@ -5,6 +5,9 @@ import '../calendar_value.dart';
 class BooleanValue extends CalendarValue<bool> {
   BooleanValue(bool value) : super(value, ValueType.boolean);
 
+  factory BooleanValue.fromCrawledStringValue(String value) =>
+      BooleanValue(value.toUpperCase() == "TRUE");
+
   @override
   String sanitizeToString() {
     return value ? "TRUE" : "FALSE";

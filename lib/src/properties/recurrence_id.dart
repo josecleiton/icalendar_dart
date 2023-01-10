@@ -2,6 +2,7 @@ import '../calendar_parameter.dart';
 import '../calendar_parameter_value.dart';
 import '../calendar_property.dart';
 import '../calendar_value.dart';
+import '../models/crawled_property.dart';
 import '../parameters/recurrence_identifier_range.dart';
 import '../parameters/time_zone_identifier.dart';
 import '../parameters/value_data_type.dart';
@@ -32,10 +33,43 @@ class RecurrenceIdProperty extends CalendarProperty<CalendarValue<DateTime>> {
           valueType == ValueType.date ? DateValue(value) : DateTimeValue(value),
         );
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  factory RecurrenceIdProperty.fromCrawledProperty(CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "RECURRENCE-ID",
+      "Received invalid property: ${property.name}",
+    );
+
+    return RecurrenceIdProperty(
+      DateTimeValue.fromCrawledStringValue(property.value).value,
+      valueType: property.parameters
+              .where(ValueDataTypeParameter.testCrawledParameter)
+              .isEmpty
+          ? ValueType.dateTime
+          : property.parameters
+              .where(ValueDataTypeParameter.testCrawledParameter)
+              .map((e) => ValueDataTypeParameter.fromCrawledParameter(e))
+              .first
+              .type,
+      timeZoneIdentifier: property.parameters
+              .where(TimeZoneIdentifierParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(TimeZoneIdentifierParameter.testCrawledParameter)
+              .map((e) => TimeZoneIdentifierParameter.fromCrawledParameter(e))
+              .first
+              .timeZoneIdentifier,
+      recurrenceIdentifierRangeType: property.parameters
+              .where(RecurrenceIdentifierRangeParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(RecurrenceIdentifierRangeParameter.testCrawledParameter)
+              .map((e) =>
+                  RecurrenceIdentifierRangeParameter.fromCrawledParameter(e))
+              .first
+              .type,
+    );
   }
 
   @override

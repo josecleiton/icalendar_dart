@@ -1,17 +1,28 @@
 import '../calendar_parameter.dart';
 import '../calendar_parameter_value.dart';
 import '../calendar_property.dart';
-import '../calendar_value.dart';
+import '../models/crawled_property.dart';
 import '../values/text.dart';
 
 /// RFC2445 Section 4.8.1.11
 class StatusProperty extends CalendarProperty<TextValue> {
   StatusProperty(StatusType type) : super("STATUS", TextValue(type.value));
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  factory StatusProperty.fromCrawledProperty(CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "STATUS",
+      "Received invalid property: ${property.name}",
+    );
+
+    return StatusProperty(
+      StatusType.values.firstWhere(
+        (element) =>
+            element.value.toUpperCase() ==
+            TextValue.fromCrawledStringValue(property.value)
+                .value
+                .toUpperCase(),
+      ),
+    );
   }
 
   @override

@@ -7,6 +7,9 @@ import '../calendar_value.dart';
 class CalendarUserAddressValue extends CalendarValue<String> {
   CalendarUserAddressValue(String email) : super(email, ValueType.calAddress);
 
+  factory CalendarUserAddressValue.fromCrawledStringValue(String value) =>
+      CalendarUserAddressValue(value.substring("MAILTO:".length));
+
   @override
   void validate() {
     assert(EmailValidator.validate(value), "Email is invalid");

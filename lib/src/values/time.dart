@@ -26,6 +26,19 @@ class TimeValue extends CalendarValue<DateTime> {
     this.timeZoneIdentifier,
   }) : super(value, ValueType.time);
 
+  factory TimeValue.fromCrawledStringValue(
+    String value, {
+    String? timeZoneIdentifier,
+  }) =>
+      TimeValue(
+        DateFormat("HHmmss").parse(
+          value.toUpperCase(),
+          value.toUpperCase().endsWith("Z"),
+        ),
+        fixed: value.toUpperCase().endsWith("Z") || timeZoneIdentifier != null,
+        timeZoneIdentifier: timeZoneIdentifier,
+      );
+
   @override
   String sanitizeToString() {
     DateTime sanitizedValue = value;
@@ -39,10 +52,13 @@ class TimeValue extends CalendarValue<DateTime> {
 
   @override
   List<CalendarParameter> getInlineParameters() {
-    if (!fixed || value.isUtc || timeZoneIdentifier == null) return [];
-    return [
-      TimeZoneIdentifierParameter(timeZoneIdentifier!),
-    ];
+    if (fixed && timeZoneIdentifier != null) {
+      return [
+        TimeZoneIdentifierParameter(timeZoneIdentifier!),
+      ];
+    }
+
+    return [];
   }
 }
 

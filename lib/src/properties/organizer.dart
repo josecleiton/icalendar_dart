@@ -3,7 +3,7 @@ import 'package:intl/locale.dart';
 import '../calendar_parameter.dart';
 import '../calendar_parameter_value.dart';
 import '../calendar_property.dart';
-import '../calendar_value.dart';
+import '../models/crawled_property.dart';
 import '../parameters/common_name.dart';
 import '../parameters/directory_entry.dart';
 import '../parameters/language.dart';
@@ -25,10 +25,51 @@ class OrganizerProperty extends CalendarProperty<CalendarUserAddressValue> {
     this.sentByEmail,
   }) : super("ORGANIZER", CalendarUserAddressValue(email));
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  factory OrganizerProperty.fromCrawledProperty(CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "ORGANIZER",
+      "Received invalid property: ${property.name}",
+    );
+
+    return OrganizerProperty(
+      CalendarUserAddressValue.fromCrawledStringValue(property.value).value,
+      locale: property.parameters
+              .where(LanguageParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(LanguageParameter.testCrawledParameter)
+              .map((e) => LanguageParameter.fromCrawledParameter(e))
+              .first
+              .locale,
+      sentByEmail: property.parameters
+              .where(SentByParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(SentByParameter.testCrawledParameter)
+              .map((e) => SentByParameter.fromCrawledParameter(e))
+              .first
+              .email,
+      commonName: property.parameters
+              .where(CommonNameParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(CommonNameParameter.testCrawledParameter)
+              .map((e) => CommonNameParameter.fromCrawledParameter(e))
+              .first
+              .commonName,
+      directoryEntryUri: property.parameters
+              .where(DirectoryEntryParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(DirectoryEntryParameter.testCrawledParameter)
+              .map((e) => DirectoryEntryParameter.fromCrawledParameter(e))
+              .first
+              .uri,
+    );
   }
 
   @override

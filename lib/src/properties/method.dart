@@ -1,17 +1,22 @@
 import '../calendar_parameter.dart';
 import '../calendar_parameter_value.dart';
 import '../calendar_property.dart';
-import '../calendar_value.dart';
+import '../models/crawled_property.dart';
 import '../values/text.dart';
 
 /// RFC2445 Section 4.7.2
 class MethodProperty extends CalendarProperty<TextValue> {
   MethodProperty(String value) : super("METHOD", TextValue(value));
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  factory MethodProperty.fromCrawledProperty(CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "METHOD",
+      "Received invalid property: ${property.name}",
+    );
+
+    return MethodProperty(
+      TextValue.fromCrawledStringValue(property.value).value,
+    );
   }
 
   @override

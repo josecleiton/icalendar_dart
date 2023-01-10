@@ -14,6 +14,77 @@ class DurationValue extends CalendarValue<Duration> {
     this.inWeeks = false,
   }) : super(value, ValueType.duration);
 
+  factory DurationValue.fromCrawledStringValue(String value) {
+    final durRegexp = RegExp(r'(?:([0-9]+)(D|W|H|M|S))', caseSensitive: false);
+    final durMatches = durRegexp.allMatches(value);
+    final hasWeeks = durMatches.map((e) => e.group(2)).any(
+          (element) => element?.toUpperCase() == "W",
+        );
+    final hasDays = durMatches.map((e) => e.group(2)).any(
+          (element) => element?.toUpperCase() == "D",
+        );
+    final hasHours = durMatches.map((e) => e.group(2)).any(
+          (element) => element?.toUpperCase() == "H",
+        );
+    final hasMinutes = durMatches.map((e) => e.group(2)).any(
+          (element) => element?.toUpperCase() == "M",
+        );
+    final hasSeconds = durMatches.map((e) => e.group(2)).any(
+          (element) => element?.toUpperCase() == "S",
+        );
+
+    if (hasWeeks) {
+      return DurationValue(
+          Duration(
+            days: int.parse(
+              durMatches
+                  .firstWhere(
+                      (element) => element.group(2)?.toUpperCase() == "W")
+                  .group(1)!,
+            ),
+          ),
+          inWeeks: true);
+    }
+
+    return DurationValue(
+      Duration(
+        days: hasDays
+            ? int.parse(
+                durMatches
+                    .firstWhere(
+                        (element) => element.group(2)?.toUpperCase() == "D")
+                    .group(1)!,
+              )
+            : 0,
+        hours: hasHours
+            ? int.parse(
+                durMatches
+                    .firstWhere(
+                        (element) => element.group(2)?.toUpperCase() == "H")
+                    .group(1)!,
+              )
+            : 0,
+        minutes: hasMinutes
+            ? int.parse(
+                durMatches
+                    .firstWhere(
+                        (element) => element.group(2)?.toUpperCase() == "M")
+                    .group(1)!,
+              )
+            : 0,
+        seconds: hasSeconds
+            ? int.parse(
+                durMatches
+                    .firstWhere(
+                        (element) => element.group(2)?.toUpperCase() == "S")
+                    .group(1)!,
+              )
+            : 0,
+      ),
+      inWeeks: false,
+    );
+  }
+
   @override
   String sanitizeToString() {
     final res = StringBuffer("${value.isNegative ? "-" : ""}P");

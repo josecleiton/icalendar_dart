@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -5,6 +6,7 @@ import '../calendar_parameter.dart';
 import '../calendar_parameter_value.dart';
 import '../calendar_property.dart';
 import '../calendar_value.dart';
+import '../models/crawled_property.dart';
 import '../parameters/format_type.dart';
 import '../parameters/value_data_type.dart';
 import '../values/binary.dart';
@@ -14,10 +16,13 @@ import '../values/uri.dart';
 class UriAttachmentProperty extends CalendarProperty<UriValue> {
   UriAttachmentProperty(Uri value) : super("ATTACH", UriValue(value));
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  factory UriAttachmentProperty.fromCrawledProperty(CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "ATTACH",
+      "Received invalid property: ${property.name}",
+    );
+
+    return UriAttachmentProperty(Uri.parse(property.value));
   }
 
   @override
@@ -32,13 +37,34 @@ class UriAttachmentProperty extends CalendarProperty<UriValue> {
 class BinaryAttachmentProperty extends CalendarProperty<BinaryValue> {
   final ContentType? contentType;
 
-  BinaryAttachmentProperty(Uint8List value, this.contentType)
-      : super("ATTACH", BinaryValue(value));
+  BinaryAttachmentProperty(
+    Uint8List value, {
+    this.contentType,
+  }) : super("ATTACH", BinaryValue(value));
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  factory BinaryAttachmentProperty.fromCrawledProperty(
+    CrawledProperty property,
+  ) {
+    assert(
+      property.name.toUpperCase() == "ATTACH",
+      "Received invalid property: ${property.name}",
+    );
+
+    if (property.parameters.isEmpty ||
+        !property.parameters
+            .any((element) => element.name.toUpperCase() == "FMTTYPE")) {
+      return BinaryAttachmentProperty(
+        base64Decode(property.value),
+      );
+    }
+
+    final contentTypeValue = property.parameters
+        .firstWhere((element) => element.name.toUpperCase() == "FMTTYPE");
+
+    return BinaryAttachmentProperty(
+      base64Decode(property.value),
+      contentType: ContentType.parse(contentTypeValue.value),
+    );
   }
 
   @override

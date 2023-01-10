@@ -1,10 +1,33 @@
 import '../calendar_parameter.dart';
+import '../models/craweled_parameter.dart';
 import '../values/text.dart';
 
 /// RFC2445 Section 4.2.15
 class RelationshipTypeParameter extends CalendarParameter<TextParameterValue> {
-  RelationshipTypeParameter(RelationshipType type)
+  final RelationshipType type;
+
+  RelationshipTypeParameter(this.type)
       : super("RELTYPE", TextParameterValue(type.value));
+
+  factory RelationshipTypeParameter.fromCrawledParameter(
+      CrawledParameter parameter) {
+    assert(
+      testCrawledParameter(parameter),
+      "Received invalid parameter: ${parameter.name}",
+    );
+    return RelationshipTypeParameter(
+      RelationshipType.values.firstWhere(
+        (element) =>
+            element.value.toUpperCase() ==
+            TextValue.fromCrawledStringValue(parameter.value)
+                .value
+                .toUpperCase(),
+      ),
+    );
+  }
+
+  static bool testCrawledParameter(CrawledParameter parameter) =>
+      parameter.name.toUpperCase() == "RELTYPE";
 }
 
 enum RelationshipType {

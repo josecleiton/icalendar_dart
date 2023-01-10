@@ -1,11 +1,34 @@
 import '../calendar_parameter.dart';
+import '../models/craweled_parameter.dart';
 import '../values/text.dart';
 
 /// RFC2445 Section 4.2.13
 class RecurrenceIdentifierRangeParameter
     extends CalendarParameter<TextParameterValue> {
-  RecurrenceIdentifierRangeParameter(RecurrenceIdentifierRangeType type)
+  final RecurrenceIdentifierRangeType type;
+
+  RecurrenceIdentifierRangeParameter(this.type)
       : super("RANGE", TextParameterValue(type.value));
+
+  factory RecurrenceIdentifierRangeParameter.fromCrawledParameter(
+      CrawledParameter parameter) {
+    assert(
+      testCrawledParameter(parameter),
+      "Received invalid parameter: ${parameter.name}",
+    );
+    return RecurrenceIdentifierRangeParameter(
+      RecurrenceIdentifierRangeType.values.firstWhere(
+        (element) =>
+            element.value.toUpperCase() ==
+            TextValue.fromCrawledStringValue(parameter.value)
+                .value
+                .toUpperCase(),
+      ),
+    );
+  }
+
+  static bool testCrawledParameter(CrawledParameter parameter) =>
+      parameter.name.toUpperCase() == "RANGE";
 }
 
 enum RecurrenceIdentifierRangeType {

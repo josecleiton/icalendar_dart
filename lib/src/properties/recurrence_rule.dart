@@ -1,7 +1,7 @@
 import '../calendar_parameter.dart';
 import '../calendar_parameter_value.dart';
 import '../calendar_property.dart';
-import '../calendar_value.dart';
+import '../models/crawled_property.dart';
 import '../models/recurrence_rule.dart';
 import '../values/recurrence_rule.dart';
 
@@ -16,7 +16,7 @@ class RecurrenceRuleProperty extends CalendarProperty<RecurrenceRuleValue> {
     Set<int>? bySeconds,
     Set<int>? byMinutes,
     Set<int>? byHours,
-    Set<RecurranceByDay>? byDays,
+    Set<RecurrenceByDay>? byDays,
     Set<int>? byMonthDays,
     Set<int>? byYearDays,
     Set<int>? byWeekNumbers,
@@ -42,10 +42,18 @@ class RecurrenceRuleProperty extends CalendarProperty<RecurrenceRuleValue> {
           ),
         );
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  RecurrenceRuleProperty.fromValue(RecurrenceRuleValue value)
+      : super("RRULE", value);
+
+  factory RecurrenceRuleProperty.fromCrawledProperty(CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "RRULE",
+      "Received invalid property: ${property.name}",
+    );
+
+    return RecurrenceRuleProperty.fromValue(
+      RecurrenceRuleValue.fromCrawledStringValue(property.value),
+    );
   }
 
   @override

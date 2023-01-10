@@ -1,10 +1,13 @@
+import 'package:equatable/equatable.dart';
+
 import 'calendar_parameter.dart';
 import 'calendar_parameter_value.dart';
 import 'calendar_value.dart';
 
-abstract class CalendarProperty<ValueType extends CalendarValue> {
+abstract class CalendarProperty<ValueType extends CalendarValue>
+    extends Equatable {
   final String propertyName;
-  final ValueType? value;
+  final ValueType value;
 
   CalendarProperty(this.propertyName, this.value);
 
@@ -16,14 +19,13 @@ abstract class CalendarProperty<ValueType extends CalendarValue> {
     res.writeAll([
       propertyName.toUpperCase(),
       ...getParameters(),
-      ...(value == null ? [] : value!.getInlineParameters())
+      ...value.getInlineParameters()
     ], ";");
-    if (value != null) {
-      res.write(":");
-      res.write(value!);
-    }
+    res.write(":");
+    res.write(value);
     return res.toString();
   }
 
-  T deserialize<T extends CalendarProperty>(String ical);
+  @override
+  List<Object?> get props => [propertyName, value, getParameters()];
 }

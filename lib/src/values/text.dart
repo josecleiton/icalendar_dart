@@ -10,6 +10,15 @@ class TextValue extends CalendarValue<String> {
     this.escapeCharacters = true,
   }) : super(value, ValueType.text);
 
+  factory TextValue.fromCrawledStringValue(String value) => TextValue(
+        value
+            .replaceAllMapped(
+              RegExp(r'\\(,|\\|;)', caseSensitive: false),
+              (match) => match.group(1)!,
+            )
+            .replaceAll(RegExp(r'\\n', caseSensitive: false), "\n"),
+      );
+
   @override
   String sanitizeToString() {
     final val = value.trim();

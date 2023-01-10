@@ -1,7 +1,7 @@
 import '../calendar_parameter.dart';
 import '../calendar_parameter_value.dart';
 import '../calendar_property.dart';
-import '../calendar_value.dart';
+import '../models/crawled_property.dart';
 import '../values/text.dart';
 
 /// RFC2445 Section 4.8.2.7
@@ -9,10 +9,22 @@ class TimeTransparencyProperty extends CalendarProperty<TextValue> {
   TimeTransparencyProperty(TimeTransparencyType type)
       : super("TRANSP", TextValue(type.value));
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  factory TimeTransparencyProperty.fromCrawledProperty(
+      CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "TRANSP",
+      "Received invalid property: ${property.name}",
+    );
+
+    return TimeTransparencyProperty(
+      TimeTransparencyType.values.firstWhere(
+        (element) =>
+            element.value.toUpperCase() ==
+            TextValue.fromCrawledStringValue(property.value)
+                .value
+                .toUpperCase(),
+      ),
+    );
   }
 
   @override

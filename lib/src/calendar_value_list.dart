@@ -28,6 +28,14 @@ class CalendarValueList<T extends CalendarValue>
     return inlineParams;
   }
 
+  factory CalendarValueList.fromCrawledStringValue(
+    String value,
+    T Function(String stringElement) toElement,
+  ) {
+    return CalendarValueList(
+        value.split(RegExp(r'[^\\],')).map(toElement).toList());
+  }
+
   T operator [](int index) {
     return values[index];
   }

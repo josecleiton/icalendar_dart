@@ -1,8 +1,11 @@
+import 'package:equatable/equatable.dart';
+
 import 'calendar_parameter_value.dart';
 
-abstract class CalendarParameter<ValueType extends CalendarParameterValue> {
+abstract class CalendarParameter<ValueType extends CalendarParameterValue>
+    extends Equatable {
   final String parameterName;
-  final ValueType? value;
+  final ValueType value;
 
   CalendarParameter(this.parameterName, this.value);
 
@@ -10,10 +13,11 @@ abstract class CalendarParameter<ValueType extends CalendarParameterValue> {
   String toString() {
     final res = StringBuffer();
     res.write(parameterName.toUpperCase());
-    if (value != null) {
-      res.write("=");
-      res.write(value!);
-    }
+    res.write("=");
+    res.write(value);
     return res.toString();
   }
+
+  @override
+  List<Object?> get props => [parameterName, value];
 }

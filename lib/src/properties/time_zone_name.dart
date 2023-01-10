@@ -3,7 +3,7 @@ import 'package:intl/locale.dart';
 import '../calendar_parameter.dart';
 import '../calendar_parameter_value.dart';
 import '../calendar_property.dart';
-import '../calendar_value.dart';
+import '../models/crawled_property.dart';
 import '../parameters/language.dart';
 import '../values/text.dart';
 
@@ -16,10 +16,24 @@ class TimeZoneNameProperty extends CalendarProperty<TextValue> {
     this.locale,
   }) : super("TZNAME", TextValue(name));
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  factory TimeZoneNameProperty.fromCrawledProperty(CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "TZNAME",
+      "Received invalid property: ${property.name}",
+    );
+
+    return TimeZoneNameProperty(
+      TextValue.fromCrawledStringValue(property.value).value,
+      locale: property.parameters
+              .where(LanguageParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(LanguageParameter.testCrawledParameter)
+              .map((e) => LanguageParameter.fromCrawledParameter(e))
+              .first
+              .locale,
+    );
   }
 
   @override

@@ -1,4 +1,6 @@
-class PeriodOfTime {
+import 'package:equatable/equatable.dart';
+
+class PeriodOfTime extends Equatable {
   final DateTime start;
   final DateTime? end;
   final Duration? duration;
@@ -10,13 +12,5 @@ class PeriodOfTime {
   });
 
   @override
-  bool operator ==(Object other) {
-    return other is PeriodOfTime &&
-        start == other.start &&
-        end == other.end &&
-        duration == other.duration;
-  }
-
-  @override
-  int get hashCode => Object.hash(start, end, duration);
+  List<Object?> get props => [start, end, duration];
 }

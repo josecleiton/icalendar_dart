@@ -1,7 +1,7 @@
 import '../calendar_parameter.dart';
 import '../calendar_parameter_value.dart';
 import '../calendar_property.dart';
-import '../calendar_value.dart';
+import '../models/crawled_property.dart';
 import '../values/float.dart';
 import '../values/text.dart';
 
@@ -18,10 +18,19 @@ class GeographicPositionProperty extends CalendarProperty<TextValue> {
           ),
         );
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  factory GeographicPositionProperty.fromCrawledProperty(
+      CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "GEO",
+      "Received invalid property: ${property.name}",
+    );
+
+    return GeographicPositionProperty(
+      lat: FloatValue.fromCrawledStringValue(property.value.split(";").first)
+          .value,
+      long: FloatValue.fromCrawledStringValue(property.value.split(";").last)
+          .value,
+    );
   }
 
   @override

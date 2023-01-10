@@ -3,6 +3,7 @@ import '../calendar_parameter_value.dart';
 import '../calendar_property.dart';
 import '../calendar_value.dart';
 import '../calendar_value_list.dart';
+import '../models/crawled_property.dart';
 import '../parameters/time_zone_identifier.dart';
 import '../parameters/value_data_type.dart';
 import '../values/date.dart';
@@ -37,10 +38,37 @@ class RecurrenceDateTimesProperty
           ),
         );
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  factory RecurrenceDateTimesProperty.fromCrawledProperty(
+      CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "RDATE",
+      "Received invalid property: ${property.name}",
+    );
+
+    return RecurrenceDateTimesProperty(
+      CalendarValueList.fromCrawledStringValue(
+        property.value,
+        (stringElem) => DateTimeValue.fromCrawledStringValue(stringElem),
+      ).values.map((e) => e.value).toList(),
+      valueType: property.parameters
+              .where(ValueDataTypeParameter.testCrawledParameter)
+              .isEmpty
+          ? ValueType.dateTime
+          : property.parameters
+              .where(ValueDataTypeParameter.testCrawledParameter)
+              .map((e) => ValueDataTypeParameter.fromCrawledParameter(e))
+              .first
+              .type,
+      timeZoneIdentifier: property.parameters
+              .where(TimeZoneIdentifierParameter.testCrawledParameter)
+              .isEmpty
+          ? null
+          : property.parameters
+              .where(TimeZoneIdentifierParameter.testCrawledParameter)
+              .map((e) => TimeZoneIdentifierParameter.fromCrawledParameter(e))
+              .first
+              .timeZoneIdentifier,
+    );
   }
 
   @override

@@ -1,7 +1,7 @@
 import '../calendar_parameter.dart';
 import '../calendar_parameter_value.dart';
 import '../calendar_property.dart';
-import '../calendar_value.dart';
+import '../models/crawled_property.dart';
 import '../values/integer.dart';
 
 /// RFC2445 Section 4.8.1.8
@@ -13,10 +13,16 @@ class PercentCompleteProperty extends CalendarProperty<IntegerValue> {
         ),
         super("PERCENT-COMPLETE", IntegerValue(percent));
 
-  @override
-  T deserialize<T extends CalendarProperty<CalendarValue>>(String ical) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+  factory PercentCompleteProperty.fromCrawledProperty(
+      CrawledProperty property) {
+    assert(
+      property.name.toUpperCase() == "PERCENT-COMPLETE",
+      "Received invalid property: ${property.name}",
+    );
+
+    return PercentCompleteProperty(
+      IntegerValue.fromCrawledStringValue(property.value).value,
+    );
   }
 
   @override

@@ -7,6 +7,9 @@ import '../calendar_value.dart';
 class DateValue extends CalendarValue<DateTime> {
   DateValue(DateTime value) : super(value, ValueType.date);
 
+  factory DateValue.fromCrawledStringValue(String value) =>
+      DateValue(DateFormat("yMMdd").parse(value.toUpperCase()));
+
   @override
   String sanitizeToString() {
     return DateFormat("yMMdd").format(value);

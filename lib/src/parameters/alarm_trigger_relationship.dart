@@ -1,11 +1,34 @@
 import '../calendar_parameter.dart';
+import '../models/craweled_parameter.dart';
 import '../values/text.dart';
 
 /// RFC2445 Section 4.2.14
 class AlarmTriggerRelationshipParameter
     extends CalendarParameter<TextParameterValue> {
-  AlarmTriggerRelationshipParameter(AlarmTriggerRelationshipType type)
+  final AlarmTriggerRelationshipType type;
+
+  AlarmTriggerRelationshipParameter(this.type)
       : super("RELATED", TextParameterValue(type.value));
+
+  factory AlarmTriggerRelationshipParameter.fromCrawledParameter(
+      CrawledParameter parameter) {
+    assert(
+      testCrawledParameter(parameter),
+      "Received invalid parameter: ${parameter.name}",
+    );
+    return AlarmTriggerRelationshipParameter(
+      AlarmTriggerRelationshipType.values.firstWhere(
+        (element) =>
+            element.value.toUpperCase() ==
+            TextValue.fromCrawledStringValue(parameter.value)
+                .value
+                .toUpperCase(),
+      ),
+    );
+  }
+
+  static bool testCrawledParameter(CrawledParameter parameter) =>
+      parameter.name.toUpperCase() == "RELATED";
 }
 
 enum AlarmTriggerRelationshipType { start, end }
