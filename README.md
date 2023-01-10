@@ -107,6 +107,8 @@ void main() {
 
 # TODO
 
+- [ ] Implement Interoperability Support ([iTIP](https://datatracker.ietf.org/doc/html/rfc5546)):
+  - Implement functions that make component modification more intuitive (modifyEvent, markCompleted on todo components, maybe a RRule builder, etc)
 - [ ] Better documentation, maybe a script that reads the RFC2445 comment I left on most objects and grabs the relevant section of the spec.
 - [ ] First-Class support for non-standard parameters/properties/components, and IANA-Token/Name objects
 
