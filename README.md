@@ -107,6 +107,7 @@ void main() {
 
 # TODO
 
+- [ ] Components should have the same structure and only expose/accept native types. Then translate to ICalendar types when passing value to super.
 - [ ] Write tests.......
 - [ ] Implement Interoperability Support ([iTIP](https://datatracker.ietf.org/doc/html/rfc5546)):
   - Implement functions that make component modification more intuitive (modifyEvent, markCompleted on todo components, maybe a RRule builder, etc)
