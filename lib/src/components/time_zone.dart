@@ -128,7 +128,7 @@ abstract class _TimeZoneSubComponent extends CalendarComponent {
   final List<TimeZoneNameProperty>? timeZoneNames;
 
   const _TimeZoneSubComponent(
-    String componentName, {
+    super.componentName, {
     required this.dateTimeStart,
     required this.timeZoneOffsetFrom,
     required this.timeZoneOffsetTo,
@@ -136,7 +136,7 @@ abstract class _TimeZoneSubComponent extends CalendarComponent {
     this.recurrenceDateTimes,
     this.recurrenceRules,
     this.timeZoneNames,
-  }) : super(componentName);
+  });
 
   @override
   List<CalendarProperty<CalendarValue>> getProperties() {

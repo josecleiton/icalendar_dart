@@ -68,12 +68,8 @@ class TimeValue extends CalendarValue<DateTime> {
 
 class TimeParameterValue extends TimeValue with CalendarParameterValue {
   TimeParameterValue(
-    DateTime value, {
-    bool fixed = _defaultFixed,
-    String? timeZoneIdentifier,
-  }) : super(
-          value,
-          fixed: fixed,
-          timeZoneIdentifier: timeZoneIdentifier,
-        );
+    super.value, {
+    super.fixed,
+    super.timeZoneIdentifier,
+  });
 }

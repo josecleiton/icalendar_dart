@@ -14,5 +14,5 @@ class IntegerValue extends CalendarValue<int> {
 }
 
 class IntegerParameterValue extends IntegerValue with CalendarParameterValue {
-  IntegerParameterValue(int value) : super(value);
+  IntegerParameterValue(super.value);
 }

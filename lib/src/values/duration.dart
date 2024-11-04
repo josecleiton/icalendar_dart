@@ -113,5 +113,5 @@ class DurationValue extends CalendarValue<Duration> {
 }
 
 class DurationParameterValue extends DurationValue with CalendarParameterValue {
-  DurationParameterValue(Duration value) : super(value);
+  DurationParameterValue(super.value);
 }

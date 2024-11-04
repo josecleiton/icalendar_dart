@@ -14,5 +14,5 @@ class FloatValue extends CalendarValue<double> {
 }
 
 class FloatParameterValue extends FloatValue with CalendarParameterValue {
-  FloatParameterValue(double value) : super(value);
+  FloatParameterValue(super.value);
 }
